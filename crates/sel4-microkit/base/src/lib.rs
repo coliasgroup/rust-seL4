@@ -18,7 +18,7 @@ pub mod ipc;
 
 pub use channel::{Channel, IrqAckError, ProtectionDomain};
 pub use defer::{DeferredAction, DeferredActionInterface, DeferredActionSlot};
-pub use handler::{Handler, Infallible, NullHandler};
+pub use handler::{Handler, Infallible, Never, NullHandler};
 pub use message::{
     get_mr, set_mr, with_msg_bytes, with_msg_bytes_mut, with_msg_regs, with_msg_regs_mut,
     MessageInfo, MessageLabel, MessageRegisterValue,
