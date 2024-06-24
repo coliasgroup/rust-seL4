@@ -98,7 +98,7 @@ self: with self;
       $OBJCOPY -O elf32-i386 ${kernelBinary} $out
     '';
 
-  libsel4 = assert !worldConfig.isMicrokit; "${seL4ForUserspace}/libsel4";
+  libsel4 = if worldConfig.isMicrokit then microkitDir else "${seL4ForUserspace}/libsel4";
 
   seL4Config =
     let
