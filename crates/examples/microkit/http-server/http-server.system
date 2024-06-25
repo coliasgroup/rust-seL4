@@ -41,13 +41,13 @@
 
     <protection_domain name="pl031_driver" pp="true" priority="251">
         <program_image path="microkit-http-server-example-pl031-driver.elf" />
-        <map mr="pl031_mmio"  vaddr="0x5_000_000_000" perms="rw" cached="false" setvar_vaddr="pl031_mmio_vaddr" />
+        <map mr="pl031_mmio" vaddr="0x5_000_000_000" perms="rw" cached="false" setvar_vaddr="pl031_mmio_vaddr" />
         <irq irq="34" id="0" />
     </protection_domain>
 
     <protection_domain name="sp804_driver" pp="true" priority="254">
         <program_image path="microkit-http-server-example-sp804-driver.elf" />
-        <map mr="sp804_mmio"  vaddr="0x5_000_000_000" perms="rw" cached="false" setvar_vaddr="sp804_mmio_vaddr" />
+        <map mr="sp804_mmio" vaddr="0x5_000_000_000" perms="rw" cached="false" setvar_vaddr="sp804_mmio_vaddr" />
         <irq irq="43" id="0" />
     </protection_domain>
 
