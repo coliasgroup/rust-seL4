@@ -15,9 +15,8 @@ mk {
       sel4-shared-ring-buffer
       sel4-shared-ring-buffer-bookkeeping
       sel4-bounce-buffer-allocator
-      sel4-sync-abstractions
     ;
     sel4-externally-shared = localCrates.sel4-externally-shared // { features = [ "unstable" ]; };
+    sel4-sync-abstractions = localCrates.sel4-sync-abstractions // { features = [ "alloc" ]; };
   };
-  
 }
