@@ -173,8 +173,16 @@ impl<A: AbstractBounceBufferAllocator> Inner<A> {
         Ok(notify_rx || notify_tx)
     }
 
+    pub(crate) fn can_receive(&mut self) -> bool {
+        self.can_claim_rx_buffer() && self.can_claim_tx_buffer()
+    }
+
+    pub(crate) fn can_transmit(&mut self) -> bool {
+        self.can_claim_tx_buffer()
+    }
+
     pub(crate) fn receive(&mut self) -> Option<(RxBufferIndex, TxBufferIndex)> {
-        if self.can_claim_rx_buffer() && self.can_claim_tx_buffer() {
+        if self.can_receive() {
             let rx = self.claim_rx_buffer().unwrap();
             let tx = self.claim_tx_buffer().unwrap();
             Some((rx, tx))
