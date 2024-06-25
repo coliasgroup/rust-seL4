@@ -133,6 +133,7 @@ members = [
     "crates/sel4-shared-ring-buffer/bookkeeping",
     "crates/sel4-shared-ring-buffer/smoltcp",
     "crates/sel4-sync",
+    "crates/sel4-sync/abstractions",
     "crates/sel4-test-harness",
     "crates/sel4/bitfield-ops",
     "crates/sel4/bitfield-parser",

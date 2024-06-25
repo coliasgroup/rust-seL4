@@ -5,37 +5,9 @@
 // SPDX-License-Identifier: MIT
 //
 
-use core::sync::atomic::{fence, AtomicBool, AtomicIsize, Ordering};
+use core::sync::atomic::{fence, AtomicIsize, Ordering};
 
 use sel4_immediate_sync_once_cell::ImmediateSyncOnceCell;
-
-pub struct PanickingRawMutex {
-    locked: AtomicBool,
-}
-
-unsafe impl lock_api::RawMutex for PanickingRawMutex {
-    type GuardMarker = lock_api::GuardNoSend; // TODO
-
-    #[allow(clippy::declare_interior_mutable_const)]
-    const INIT: Self = Self {
-        locked: AtomicBool::new(false),
-    };
-
-    fn lock(&self) {
-        if !self.try_lock() {
-            panic!("lock contention")
-        }
-    }
-
-    fn try_lock(&self) -> bool {
-        let was_locked = self.locked.swap(true, Ordering::Acquire);
-        !was_locked
-    }
-
-    unsafe fn unlock(&self) {
-        self.locked.store(false, Ordering::Release)
-    }
-}
 
 pub struct GenericRawMutex<O> {
     sync_ops: O,
