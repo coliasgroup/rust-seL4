@@ -11,7 +11,6 @@ pub use sel4_sync_abstractions::*;
 mod mutex;
 
 pub use mutex::{
-    DeferredNotificationMutexSyncOps, GenericRawMutex, IndirectNotificationMutexSyncOps,
-    MutexSyncOps, MutexSyncOpsWithInteriorMutability, MutexSyncOpsWithNotification,
-    PanickingMutexSyncOps,
+    DeferredNotificationMutexSyncOps, GenericRawMutex, MutexSyncOps,
+    MutexSyncOpsWithInteriorMutability, MutexSyncOpsWithNotification, PanickingMutexSyncOps,
 };

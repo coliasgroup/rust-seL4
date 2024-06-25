@@ -119,21 +119,9 @@ impl MutexSyncOpsWithInteriorMutability for DeferredNotificationMutexSyncOps {
     }
 }
 
-pub struct IndirectNotificationMutexSyncOps<T> {
-    get_notification: T,
-}
-
-impl<T: Fn() -> sel4::cap::Notification> IndirectNotificationMutexSyncOps<T> {
-    pub const fn new(get_notification: T) -> Self {
-        Self { get_notification }
-    }
-}
-
-impl<T: Fn() -> sel4::cap::Notification> MutexSyncOpsWithNotification
-    for IndirectNotificationMutexSyncOps<T>
-{
+impl<F: Fn() -> sel4::cap::Notification> MutexSyncOpsWithNotification for F {
     fn notification(&self) -> sel4::cap::Notification {
-        (self.get_notification)()
+        (self)()
     }
 }
 

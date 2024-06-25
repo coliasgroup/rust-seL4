@@ -44,14 +44,10 @@ macro_rules! declare_heap {
 
                     #[global_allocator]
                     static GLOBAL_ALLOCATOR: StaticDlmallocGlobalAlloc<
-                        GenericRawMutex<
-                            IndirectNotificationMutexSyncOps<fn() -> sel4::cap::Notification>,
-                        >,
+                        GenericRawMutex<fn() -> sel4::cap::Notification>,
                         &'static StaticHeap<{ SIZE }>,
                     > = StaticDlmallocGlobalAlloc::new(
-                        GenericRawMutex::new(IndirectNotificationMutexSyncOps::new(
-                            get_global_allocator_mutex_notification,
-                        )),
+                        GenericRawMutex::new(get_global_allocator_mutex_notification),
                         &STATIC_HEAP,
                     );
                 }
@@ -62,7 +58,7 @@ macro_rules! declare_heap {
 
 pub mod _private {
     pub use sel4_dlmalloc::{StaticDlmallocGlobalAlloc, StaticHeap};
-    pub use sel4_sync::{GenericRawMutex, IndirectNotificationMutexSyncOps};
+    pub use sel4_sync::GenericRawMutex;
 
     pub use super::get_global_allocator_mutex_notification;
 }
