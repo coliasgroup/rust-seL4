@@ -23,10 +23,22 @@ impl<O> GenericRawMutex<O> {
     }
 }
 
+pub trait MutexSyncOpsWithInteriorMutability {
+    type ModifyInput;
+    type ModifyOutput;
+
+    fn modify(&self, input: Self::ModifyInput) -> Self::ModifyOutput;
+}
+
 impl<O: MutexSyncOpsWithInteriorMutability> GenericRawMutex<O> {
     pub fn modify(&self, input: O::ModifyInput) -> O::ModifyOutput {
         self.sync_ops.modify(input)
     }
+}
+
+pub trait MutexSyncOps {
+    fn signal(&self);
+    fn wait(&self);
 }
 
 unsafe impl<O: MutexSyncOps> lock_api::RawMutex for GenericRawMutex<O> {
@@ -54,18 +66,6 @@ unsafe impl<O: MutexSyncOps> lock_api::RawMutex for GenericRawMutex<O> {
     }
 }
 
-pub trait MutexSyncOps {
-    fn signal(&self);
-    fn wait(&self);
-}
-
-pub trait MutexSyncOpsWithInteriorMutability {
-    type ModifyInput;
-    type ModifyOutput;
-
-    fn modify(&self, input: Self::ModifyInput) -> Self::ModifyOutput;
-}
-
 pub trait MutexSyncOpsWithNotification {
     fn notification(&self) -> sel4::cap::Notification;
 }
@@ -83,6 +83,12 @@ impl<O: MutexSyncOpsWithNotification> MutexSyncOps for O {
 impl MutexSyncOpsWithNotification for sel4::cap::Notification {
     fn notification(&self) -> sel4::cap::Notification {
         *self
+    }
+}
+
+impl<F: Fn() -> sel4::cap::Notification> MutexSyncOpsWithNotification for F {
+    fn notification(&self) -> sel4::cap::Notification {
+        (self)()
     }
 }
 
@@ -116,12 +122,6 @@ impl MutexSyncOpsWithInteriorMutability for DeferredNotificationMutexSyncOps {
 
     fn modify(&self, input: Self::ModifyInput) -> Self::ModifyOutput {
         self.inner.set(input).unwrap()
-    }
-}
-
-impl<F: Fn() -> sel4::cap::Notification> MutexSyncOpsWithNotification for F {
-    fn notification(&self) -> sel4::cap::Notification {
-        (self)()
     }
 }
 
