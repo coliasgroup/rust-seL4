@@ -90,6 +90,14 @@ impl<A: AbstractBounceBufferAllocator, S: Shared> DeviceImpl<A, S> {
         self.inner().lock().poll().unwrap()
     }
 
+    pub fn can_receive(&self) -> bool {
+        self.inner().lock().can_receive()
+    }
+
+    pub fn can_transmit(&self) -> bool {
+        self.inner().lock().can_transmit()
+    }
+
     fn new_rx_token(&self, rx_buffer: RxBufferIndex) -> RxToken<A, S> {
         RxToken {
             buffer: rx_buffer,
