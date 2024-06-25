@@ -6,9 +6,18 @@
 
 #![no_std]
 
+#[cfg(feature = "alloc")]
+extern crate alloc;
+
 use core::sync::atomic::{AtomicBool, Ordering};
 
 pub use lock_api;
+
+#[cfg(feature = "alloc")]
+mod shared;
+
+#[cfg(feature = "alloc")]
+pub use shared::{Shared, SharedArcMutex, SharedRcRefCell};
 
 pub struct PanickingRawMutex {
     locked: AtomicBool,
