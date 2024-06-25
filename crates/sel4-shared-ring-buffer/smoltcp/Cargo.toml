@@ -22,6 +22,7 @@ sel4-bounce-buffer-allocator = { path = "../../sel4-bounce-buffer-allocator" }
 sel4-externally-shared = { path = "../../sel4-externally-shared", features = ["unstable"] }
 sel4-shared-ring-buffer = { path = ".." }
 sel4-shared-ring-buffer-bookkeeping = { path = "../bookkeeping" }
+sel4-sync-abstractions = { path = "../../sel4-sync/abstractions" }
 
 [dependencies.smoltcp]
 version = "0.10.0"

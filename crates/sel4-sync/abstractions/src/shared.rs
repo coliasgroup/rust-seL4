@@ -12,61 +12,65 @@ use core::ops::DerefMut;
 
 use lock_api::{Mutex, MutexGuard, RawMutex};
 
-pub trait Shared {
-    type Container<T>: Clone;
+pub trait Shared: 'static {
+    type Container<T>: SharedContainer<T>;
+}
 
-    type ContainerInit;
+pub trait SharedContainer<T>: Clone {
+    type Init;
 
-    type ExclusiveAccess<'a, T: 'a>: DerefMut<Target = T>;
+    const DEFAULT_INIT: Self::Init;
 
-    fn new_with<T>(init: Self::ContainerInit, value: T) -> Self::Container<T>;
+    type Guard<'a>: DerefMut<Target = T>
+    where
+        Self: 'a,
+        T: 'a;
 
-    fn new<T>(value: T) -> Self::Container<T>;
+    fn new(init: Self::Init, value: T) -> Self;
 
-    fn lock<'a, T>(shared: &'a Self::Container<T>) -> Self::ExclusiveAccess<'a, T>;
+    fn lock<'a>(&'a self) -> Self::Guard<'a>;
 }
 
 pub struct SharedRcRefCell(());
 
 impl Shared for SharedRcRefCell {
     type Container<T> = Rc<RefCell<T>>;
+}
 
-    type ContainerInit = ();
+impl<T> SharedContainer<T> for Rc<RefCell<T>> {
+    type Init = ();
 
-    type ExclusiveAccess<'a, T: 'a> = RefMut<'a, T>;
+    const DEFAULT_INIT: Self::Init = ();
 
-    fn new_with<T>(_init: Self::ContainerInit, value: T) -> Self::Container<T> {
-        Self::new(value)
-    }
+    type Guard<'a> = RefMut<'a, T> where Self: 'a, T: 'a;
 
-    fn new<T>(value: T) -> Self::Container<T> {
+    fn new(_init: Self::Init, value: T) -> Self {
         Rc::new(RefCell::new(value))
     }
 
-    fn lock<'a, T>(shared: &'a Self::Container<T>) -> Self::ExclusiveAccess<'a, T> {
-        shared.borrow_mut()
+    fn lock<'a>(&'a self) -> Self::Guard<'a> {
+        self.borrow_mut()
     }
 }
 
 pub struct SharedArcMutex<R>(PhantomData<R>);
 
-// R: 'static is a hack
 impl<R: RawMutex + 'static> Shared for SharedArcMutex<R> {
     type Container<T> = Arc<Mutex<R, T>>;
+}
 
-    type ContainerInit = R;
+impl<R: RawMutex + 'static, T> SharedContainer<T> for Arc<Mutex<R, T>> {
+    type Init = R;
 
-    type ExclusiveAccess<'a, T: 'a> = MutexGuard<'a, R, T>;
+    const DEFAULT_INIT: Self::Init = R::INIT;
 
-    fn new_with<T>(init: Self::ContainerInit, value: T) -> Self::Container<T> {
+    type Guard<'a> = MutexGuard<'a, R, T> where Self: 'a, T: 'a;
+
+    fn new(init: Self::Init, value: T) -> Self {
         Arc::new(Mutex::from_raw(init, value))
     }
 
-    fn new<T>(value: T) -> Self::Container<T> {
-        Arc::new(Mutex::new(value))
-    }
-
-    fn lock<'a, T>(shared: &'a Self::Container<T>) -> Self::ExclusiveAccess<'a, T> {
-        shared.lock()
+    fn lock<'a>(&'a self) -> Self::Guard<'a> {
+        Mutex::lock(self)
     }
 }
