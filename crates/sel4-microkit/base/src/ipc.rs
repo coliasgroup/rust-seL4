@@ -106,6 +106,6 @@ pub(crate) fn nb_send_recv(action: PreparedDeferredAction) -> Event {
 pub(crate) fn forfeit_sc() -> PreparedDeferredAction {
     PreparedDeferredAction::new(
         MONITOR_EP_CAP.cast(),
-        sel4::MessageInfoBuilder::default().length(1).build(),
+        sel4::MessageInfoBuilder::default().build(),
     )
 }
