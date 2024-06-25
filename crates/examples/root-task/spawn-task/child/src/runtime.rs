@@ -10,7 +10,7 @@ use sel4::CapTypeForFrameObjectOfFixedSize;
 use sel4_dlmalloc::{StaticDlmallocGlobalAlloc, StaticHeap};
 use sel4_panicking::catch_unwind;
 use sel4_panicking_env::abort;
-use sel4_sync::{GenericRawMutex, PanickingMutexSyncOps};
+use sel4_sync::PanickingRawMutex;
 
 use crate::main;
 
@@ -24,12 +24,9 @@ static STATIC_HEAP: StaticHeap<HEAP_SIZE> = StaticHeap::new();
 
 #[global_allocator]
 static GLOBAL_ALLOCATOR: StaticDlmallocGlobalAlloc<
-    GenericRawMutex<PanickingMutexSyncOps>,
+    PanickingRawMutex,
     &'static StaticHeap<HEAP_SIZE>,
-> = StaticDlmallocGlobalAlloc::new(
-    GenericRawMutex::new(PanickingMutexSyncOps::new()),
-    &STATIC_HEAP,
-);
+> = StaticDlmallocGlobalAlloc::new(PanickingRawMutex::new(), &STATIC_HEAP);
 
 sel4_panicking_env::register_debug_put_char!(sel4::debug_put_char);
 

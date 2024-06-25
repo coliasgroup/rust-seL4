@@ -113,16 +113,13 @@ fn static_heap_bounds() -> StaticHeapBounds {
 
 mod heap {
     use sel4_dlmalloc::{StaticDlmallocGlobalAlloc, StaticHeapBounds};
-    use sel4_sync::{GenericRawMutex, PanickingMutexSyncOps};
+    use sel4_sync::PanickingRawMutex;
 
     use super::static_heap_bounds;
 
     #[global_allocator]
     static GLOBAL_ALLOCATOR: StaticDlmallocGlobalAlloc<
-        GenericRawMutex<PanickingMutexSyncOps>,
+        PanickingRawMutex,
         fn() -> StaticHeapBounds,
-    > = StaticDlmallocGlobalAlloc::new(
-        GenericRawMutex::new(PanickingMutexSyncOps::new()),
-        static_heap_bounds,
-    );
+    > = StaticDlmallocGlobalAlloc::new(PanickingRawMutex::new(), static_heap_bounds);
 }
