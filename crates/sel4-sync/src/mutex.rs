@@ -137,27 +137,6 @@ impl<T: Fn() -> sel4::cap::Notification> MutexSyncOpsWithNotification
     }
 }
 
-pub struct AbstractMutexSyncOps<T, U> {
-    pub signal: T,
-    pub wait: U,
-}
-
-impl<T: Fn(), U: Fn()> AbstractMutexSyncOps<T, U> {
-    pub const fn new(signal: T, wait: U) -> Self {
-        Self { signal, wait }
-    }
-}
-
-impl<T: Fn(), U: Fn()> MutexSyncOps for AbstractMutexSyncOps<T, U> {
-    fn signal(&self) {
-        (self.signal)()
-    }
-
-    fn wait(&self) {
-        (self.wait)()
-    }
-}
-
 pub struct PanickingMutexSyncOps(());
 
 impl PanickingMutexSyncOps {
