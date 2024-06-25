@@ -6,12 +6,12 @@
 
 #![no_std]
 
-pub use lock_api;
+pub use sel4_sync_abstractions::*;
 
 mod mutex;
 
 pub use mutex::{
     AbstractMutexSyncOps, DeferredNotificationMutexSyncOps, GenericRawMutex,
     IndirectNotificationMutexSyncOps, MutexSyncOps, MutexSyncOpsWithInteriorMutability,
-    MutexSyncOpsWithNotification, PanickingMutexSyncOps, PanickingRawMutex,
+    MutexSyncOpsWithNotification, PanickingMutexSyncOps,
 };
