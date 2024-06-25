@@ -12,7 +12,6 @@ mk {
     inherit (versions) lock_api;
   };
   features = {
-    default = [ "alloc" ];
     alloc = [];
   };
 }

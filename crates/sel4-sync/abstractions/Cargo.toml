@@ -18,7 +18,6 @@ license = "BSD-2-Clause"
 
 [features]
 alloc = []
-default = ["alloc"]
 
 [dependencies]
 lock_api = "0.4.12"
