@@ -124,27 +124,3 @@ impl MutexSyncOpsWithInteriorMutability for DeferredNotificationMutexSyncOps {
         self.inner.set(input).unwrap()
     }
 }
-
-pub struct PanickingMutexSyncOps(());
-
-impl PanickingMutexSyncOps {
-    pub const fn new() -> Self {
-        Self(())
-    }
-}
-
-impl Default for PanickingMutexSyncOps {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl MutexSyncOps for PanickingMutexSyncOps {
-    fn signal(&self) {
-        panic!("unexpected contention: signal")
-    }
-
-    fn wait(&self) {
-        panic!("unexpected contention: wait")
-    }
-}

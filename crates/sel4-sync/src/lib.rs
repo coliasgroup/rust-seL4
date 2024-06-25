@@ -12,5 +12,5 @@ mod mutex;
 
 pub use mutex::{
     DeferredNotificationMutexSyncOps, GenericRawMutex, MutexSyncOps,
-    MutexSyncOpsWithInteriorMutability, MutexSyncOpsWithNotification, PanickingMutexSyncOps,
+    MutexSyncOpsWithInteriorMutability, MutexSyncOpsWithNotification,
 };
