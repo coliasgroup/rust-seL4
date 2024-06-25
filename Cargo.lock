@@ -2743,6 +2743,14 @@ dependencies = [
  "lock_api",
  "sel4",
  "sel4-immediate-sync-once-cell",
+ "sel4-sync-abstractions",
+]
+
+[[package]]
+name = "sel4-sync-abstractions"
+version = "0.1.0"
+dependencies = [
+ "lock_api",
 ]
 
 [[package]]

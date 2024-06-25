@@ -17,6 +17,7 @@ mk rec {
     inherit (localCrates)
       sel4
       sel4-immediate-sync-once-cell
+      sel4-sync-abstractions
     ;
   };
 }
