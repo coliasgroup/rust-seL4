@@ -90,8 +90,10 @@ impl<A: AbstractBounceBufferAllocator> Device for DeviceImpl<A> {
     }
 
     fn receive(&mut self, _timestamp: Instant) -> Option<(Self::RxToken<'_>, Self::TxToken<'_>)> {
-        let r = self.inner().borrow_mut().receive();
-        r.map(|(rx_ix, tx_ix)| (self.new_rx_token(rx_ix), self.new_tx_token(tx_ix)))
+        self.inner()
+            .borrow_mut()
+            .receive()
+            .map(|(rx_ix, tx_ix)| (self.new_rx_token(rx_ix), self.new_tx_token(tx_ix)))
     }
 
     fn transmit(&mut self, _timestamp: Instant) -> Option<Self::TxToken<'_>> {
