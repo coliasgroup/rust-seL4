@@ -17,7 +17,7 @@ pub use lock_api;
 mod shared;
 
 #[cfg(feature = "alloc")]
-pub use shared::{Shared, SharedArcMutex, SharedRcRefCell};
+pub use shared::{Shared, SharedArcMutex, SharedContainer, SharedRcRefCell};
 
 pub struct PanickingRawMutex {
     locked: AtomicBool,
