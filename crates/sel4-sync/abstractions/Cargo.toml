@@ -16,5 +16,9 @@ authors = ["Nick Spinale <nick.spinale@coliasgroup.com>"]
 edition = "2021"
 license = "BSD-2-Clause"
 
+[features]
+alloc = []
+default = ["alloc"]
+
 [dependencies]
 lock_api = "0.4.12"
