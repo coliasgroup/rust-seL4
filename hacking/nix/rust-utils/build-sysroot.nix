@@ -18,6 +18,7 @@
 , std ? false
 , compilerBuiltinsMem ? true
 , compilerBuiltinsC ? rustEnvironment.compilerRTSource != null
+, src ? null
 , extraManifest ? {}
 , extraConfig ? {}
 }:
@@ -91,6 +92,9 @@ in
 } // lib.optionalAttrs compilerBuiltinsC {
   "CC_${targetTriple.name}" = "${stdenv.cc.targetPrefix}gcc";
   RUST_COMPILER_RT_ROOT = rustEnvironment.compilerRTSource;
+} // lib.optionalAttrs (src != null) {
+  # HACK
+  __CARGO_TESTS_ONLY_SRC_ROOT = src;
 }) ''
   cargo build \
     -Z unstable-options \
