@@ -83,7 +83,8 @@ mkShell (seL4RustEnvVars // kernelLoaderConfigEnvVars // capdlEnvVars // bindgen
   ];
 
   shellHook = ''
-    # abbreviation
     export h=$HOST_CARGO_FLAGS
+    export t="--target $RUST_SEL4_TARGET"
+    export bt="--target $RUST_BARE_METAL_TARGET"
   '';
 })
