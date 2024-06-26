@@ -5,7 +5,7 @@
 #
 
 { lib, stdenv, buildPlatform, hostPlatform, buildPackages
-, runCommand, runCommandCC, linkFarm
+, runCommand, runCommandCC, linkFarm, writeText
 , crateUtils
 , defaultRustEnvironment, defaultRustTargetTriple
 }:
@@ -36,7 +36,9 @@ let
   manifest = crateUtils.toTOMLFile "Cargo.toml" (crateUtils.clobber [
     {
       inherit package;
-      lib.path = crateUtils.dummyLibInSrc;
+      lib.path = crateUtils.dummyInSrc "lib.rs" (writeText "main.rs" ''
+        #![no_std]
+      '');
     }
     extraManifest
   ]);
