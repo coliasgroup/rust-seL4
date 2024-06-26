@@ -12,16 +12,19 @@ mk {
     inherit (localCrates)
       sel4
       sel4-immediate-sync-once-cell
-      sel4-panicking
       sel4-panicking-env
       sel4-dlmalloc
       sel4-sync
       sel4-root-task-macros
     ;
-    sel4-runtime-common = localCrates.sel4-runtime-common // { features = [ "tls" "start" ]; };
+    sel4-panicking = localCrates.sel4-panicking // { optional = true; };
+    sel4-runtime-common = localCrates.sel4-runtime-common // {
+      default-features = false; features = [ "tls" "start" ];
+    };
   };
   features = {
     default = [
+      "sel4-panicking"
       "unwinding"
     ];
     full = [
@@ -37,6 +40,9 @@ mk {
     ];
     single-threaded = [
       "sel4/single-threaded"
+    ];
+    std = [
+      "sel4-runtime-common/std"
     ];
   };
 }

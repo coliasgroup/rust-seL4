@@ -7,7 +7,13 @@
 use core::fmt;
 use core::panic::UnwindSafe;
 
-use crate::{abort, panicking::catch_unwind, Termination};
+use crate::{abort, Termination};
+
+#[cfg(not(feature = "std"))]
+use crate::panicking::catch_unwind;
+
+#[cfg(feature = "std")]
+use std::panic::catch_unwind;
 
 #[cfg(target_thread_local)]
 #[no_mangle]
@@ -27,7 +33,7 @@ unsafe extern "C" fn sel4_runtime_rust_entry(bootinfo: *const sel4::BootInfo) ->
 
 #[allow(unreachable_code)]
 fn inner_entry(bootinfo: *const sel4::BootInfo) -> ! {
-    #[cfg(all(feature = "unwinding", panic = "unwind"))]
+    #[cfg(all(any(feature = "unwinding", feature = "std"), panic = "unwind"))]
     {
         sel4_runtime_common::set_eh_frame_finder().unwrap();
     }

@@ -18,17 +18,22 @@ license = "BSD-2-Clause"
 
 [features]
 alloc = ["sel4-panicking/alloc"]
-default = ["unwinding"]
+default = ["sel4-panicking", "unwinding"]
 full = ["default", "alloc"]
 single-threaded = ["sel4/single-threaded"]
+std = ["sel4-runtime-common/std"]
 unwinding = ["sel4-panicking/unwinding", "sel4-runtime-common/unwinding"]
 
 [dependencies]
 sel4 = { path = "../sel4" }
 sel4-dlmalloc = { path = "../sel4-dlmalloc" }
 sel4-immediate-sync-once-cell = { path = "../sel4-immediate-sync-once-cell" }
-sel4-panicking = { path = "../sel4-panicking" }
+sel4-panicking = { path = "../sel4-panicking", optional = true }
 sel4-panicking-env = { path = "../sel4-panicking/env" }
 sel4-root-task-macros = { path = "macros" }
-sel4-runtime-common = { path = "../sel4-runtime-common", features = ["tls", "start"] }
 sel4-sync = { path = "../sel4-sync" }
+
+[dependencies.sel4-runtime-common]
+path = "../sel4-runtime-common"
+default-features = false
+features = ["tls", "start"]

@@ -20,5 +20,6 @@ mk {
   features = {
     tls = [ "dep:sel4-initialize-tls" "dep:sel4" ];
     start = [];
+    std = [];
   };
 }

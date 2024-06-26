@@ -4,7 +4,14 @@
 // SPDX-License-Identifier: BSD-2-Clause
 //
 
+#[cfg(not(feature = "std"))]
 use unwinding::custom_eh_frame_finder::{
+    set_custom_eh_frame_finder, EhFrameFinder, FrameInfo, FrameInfoKind,
+    SetCustomEhFrameFinderError,
+};
+
+#[cfg(feature = "std")]
+use unwind::{
     set_custom_eh_frame_finder, EhFrameFinder, FrameInfo, FrameInfoKind,
     SetCustomEhFrameFinderError,
 };
@@ -37,7 +44,7 @@ unsafe impl EhFrameFinder for EhFrameFinderImpl {
         })?;
 
         Some(FrameInfo {
-            text_base,
+            text_base: Some(text_base),
             kind: FrameInfoKind::EhFrameHdr(eh_frame_hdr),
         })
     }

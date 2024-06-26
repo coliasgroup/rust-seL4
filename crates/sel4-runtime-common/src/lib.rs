@@ -6,6 +6,14 @@
 
 #![no_std]
 #![feature(cfg_target_thread_local)]
+#![cfg_attr(feature = "std", feature(panic_unwind))]
+#![cfg_attr(feature = "std", feature(rustc_private))]
+
+#[cfg(all(feature = "std", feature = "unwinding"))]
+compile_error!("");
+
+#[cfg(feature = "std")]
+extern crate unwind;
 
 use sel4_elf_header::{ElfHeader, ProgramHeader};
 use sel4_panicking_env::abort;
@@ -23,10 +31,10 @@ mod tls;
 #[cfg(all(feature = "tls", target_thread_local))]
 pub use tls::{initialize_tls_on_stack_and_continue, ContArg, ContFn};
 
-#[cfg(all(feature = "unwinding", panic = "unwind"))]
+#[cfg(all(any(feature = "unwinding", feature = "std"), panic = "unwind"))]
 mod unwinding;
 
-#[cfg(all(feature = "unwinding", panic = "unwind"))]
+#[cfg(all(any(feature = "unwinding", feature = "std"), panic = "unwind"))]
 pub use self::unwinding::set_eh_frame_finder;
 
 #[allow(dead_code)]

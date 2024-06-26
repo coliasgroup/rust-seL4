@@ -18,6 +18,7 @@ license = "BSD-2-Clause"
 
 [features]
 start = []
+std = []
 tls = ["dep:sel4-initialize-tls", "dep:sel4"]
 
 [dependencies]
