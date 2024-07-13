@@ -2820,6 +2820,39 @@ dependencies = [
 ]
 
 [[package]]
+name = "sel4-vmm"
+version = "0.1.0"
+dependencies = [
+ "sel4-vmm-interfaces",
+]
+
+[[package]]
+name = "sel4-vmm-gic"
+version = "0.1.0"
+
+[[package]]
+name = "sel4-vmm-interfaces"
+version = "0.1.0"
+
+[[package]]
+name = "sel4-vmm-payload"
+version = "0.1.0"
+
+[[package]]
+name = "sel4-vmm-payload-cli"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "num",
+ "sel4-synthetic-elf",
+]
+
+[[package]]
+name = "sel4-vmm-psci"
+version = "0.1.0"
+
+[[package]]
 name = "semver"
 version = "1.0.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
