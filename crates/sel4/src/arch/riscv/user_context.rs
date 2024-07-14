@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: MIT
 //
 
-use crate::{newtype_methods, sys, Word};
+use crate::{newtype_methods, sys, user_context_newtype_ref_methods};
 
 /// Corresponds to `seL4_UserContext`.
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
@@ -13,55 +13,36 @@ pub struct UserContext(sys::seL4_UserContext);
 impl UserContext {
     newtype_methods!(pub sys::seL4_UserContext);
 
-    pub fn pc(&self) -> &Word {
-        &self.0.pc
-    }
-
-    pub fn pc_mut(&mut self) -> &mut Word {
-        &mut self.0.pc
-    }
-
-    pub fn sp(&self) -> &Word {
-        &self.0.sp
-    }
-
-    pub fn sp_mut(&mut self) -> &mut Word {
-        &mut self.0.sp
-    }
-
-    pub fn gpr_a(&self, ix: usize) -> &Word {
-        match ix {
-            0 => &self.inner().a0,
-            1 => &self.inner().a1,
-            2 => &self.inner().a2,
-            3 => &self.inner().a3,
-            4 => &self.inner().a4,
-            5 => &self.inner().a5,
-            6 => &self.inner().a6,
-            7 => &self.inner().a7,
-            _ => panic!(),
-        }
-    }
-
-    pub fn gpr_a_mut(&mut self, ix: usize) -> &mut Word {
-        match ix {
-            0 => &mut self.inner_mut().a0,
-            1 => &mut self.inner_mut().a1,
-            2 => &mut self.inner_mut().a2,
-            3 => &mut self.inner_mut().a3,
-            4 => &mut self.inner_mut().a4,
-            5 => &mut self.inner_mut().a5,
-            6 => &mut self.inner_mut().a6,
-            7 => &mut self.inner_mut().a7,
-            _ => panic!(),
-        }
-    }
-
-    pub fn c_param(&self, ix: usize) -> &Word {
-        self.gpr_a(ix)
-    }
-
-    pub fn c_param_mut(&mut self, ix: usize) -> &mut Word {
-        self.gpr_a_mut(ix)
-    }
+    user_context_newtype_ref_methods!(pc, pc_mut);
+    user_context_newtype_ref_methods!(ra, ra_mut);
+    user_context_newtype_ref_methods!(sp, sp_mut);
+    user_context_newtype_ref_methods!(gp, gp_mut);
+    user_context_newtype_ref_methods!(tp, tp_mut);
+    user_context_newtype_ref_methods!(s0, s0_mut);
+    user_context_newtype_ref_methods!(s1, s1_mut);
+    user_context_newtype_ref_methods!(s2, s2_mut);
+    user_context_newtype_ref_methods!(s3, s3_mut);
+    user_context_newtype_ref_methods!(s4, s4_mut);
+    user_context_newtype_ref_methods!(s5, s5_mut);
+    user_context_newtype_ref_methods!(s6, s6_mut);
+    user_context_newtype_ref_methods!(s7, s7_mut);
+    user_context_newtype_ref_methods!(s8, s8_mut);
+    user_context_newtype_ref_methods!(s9, s9_mut);
+    user_context_newtype_ref_methods!(s10, s10_mut);
+    user_context_newtype_ref_methods!(s11, s11_mut);
+    user_context_newtype_ref_methods!(a0, a0_mut);
+    user_context_newtype_ref_methods!(a1, a1_mut);
+    user_context_newtype_ref_methods!(a2, a2_mut);
+    user_context_newtype_ref_methods!(a3, a3_mut);
+    user_context_newtype_ref_methods!(a4, a4_mut);
+    user_context_newtype_ref_methods!(a5, a5_mut);
+    user_context_newtype_ref_methods!(a6, a6_mut);
+    user_context_newtype_ref_methods!(a7, a7_mut);
+    user_context_newtype_ref_methods!(t0, t0_mut);
+    user_context_newtype_ref_methods!(t1, t1_mut);
+    user_context_newtype_ref_methods!(t2, t2_mut);
+    user_context_newtype_ref_methods!(t3, t3_mut);
+    user_context_newtype_ref_methods!(t4, t4_mut);
+    user_context_newtype_ref_methods!(t5, t5_mut);
+    user_context_newtype_ref_methods!(t6, t6_mut);
 }

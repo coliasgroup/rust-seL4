@@ -7,7 +7,10 @@
 
 use sel4_config::{sel4_cfg, sel4_cfg_enum, sel4_cfg_if, sel4_cfg_wrap_match};
 
-use crate::{declare_fault_newtype, sys, Word};
+use crate::{
+    declare_fault_ipc_buffer_newtype, declare_fault_newtype, fault_ipc_buffer_newtype_ref_methods,
+    fault_newtype_getter_method, sys, Word,
+};
 
 declare_fault_newtype!(NullFault, sys::seL4_Fault_NullFault);
 declare_fault_newtype!(CapFault, sys::seL4_Fault_CapFault);
@@ -25,6 +28,11 @@ sel4_cfg_if! {
         declare_fault_newtype!(VPpiEvent, sys::seL4_Fault_VPPIEvent);
     }
 }
+
+declare_fault_ipc_buffer_newtype!(
+    UnknownSyscallInIpcBuffer,
+    sys::seL4_UnknownSyscall_Msg::seL4_UnknownSyscall_Length
+);
 
 #[sel4_cfg_enum]
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -83,21 +91,18 @@ impl CapFault {
 }
 
 impl UnknownSyscall {
-    pub fn fault_ip(&self) -> Word {
-        self.inner().get_FaultIP()
-    }
+    fault_newtype_getter_method!(fault_ip, get_FaultIP);
+    fault_newtype_getter_method!(sp, get_SP);
+    fault_newtype_getter_method!(lr, get_LR);
+    fault_newtype_getter_method!(syscall, get_Syscall);
+}
 
-    pub fn sp(&self) -> Word {
-        self.inner().get_SP()
-    }
-
-    pub fn lr(&self) -> Word {
-        self.inner().get_LR()
-    }
-
-    pub fn syscall(&self) -> Word {
-        self.inner().get_Syscall()
-    }
+impl<'a> UnknownSyscallInIpcBuffer<'a> {
+    fault_ipc_buffer_newtype_ref_methods!(
+        fault_ip,
+        fault_ip_mut,
+        sys::seL4_UnknownSyscall_Msg::seL4_UnknownSyscall_FaultIP
+    );
 }
 
 impl UserException {
@@ -105,20 +110,12 @@ impl UserException {
 }
 
 impl VmFault {
-    pub fn ip(&self) -> Word {
-        self.inner().get_IP()
-    }
-
-    pub fn addr(&self) -> Word {
-        self.inner().get_Addr()
-    }
+    fault_newtype_getter_method!(ip, get_IP);
+    fault_newtype_getter_method!(addr, get_Addr);
+    fault_newtype_getter_method!(fsr, get_FSR);
 
     pub fn is_prefetch(&self) -> bool {
         self.inner().get_PrefetchFault() != 0
-    }
-
-    pub fn fsr(&self) -> Word {
-        self.inner().get_FSR()
     }
 }
 
@@ -134,14 +131,10 @@ impl VGicMaintenance {
 
 #[sel4_cfg(ARM_HYPERVISOR_SUPPORT)]
 impl VCpuFault {
-    pub fn hsr(&self) -> Word {
-        self.inner().get_HSR()
-    }
+    fault_newtype_getter_method!(hsr, get_HSR);
 }
 
 #[sel4_cfg(ARM_HYPERVISOR_SUPPORT)]
 impl VPpiEvent {
-    pub fn irq(&self) -> Word {
-        self.inner().get_irq()
-    }
+    fault_newtype_getter_method!(irq, get_irq);
 }

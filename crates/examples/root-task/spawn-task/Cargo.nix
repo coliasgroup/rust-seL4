@@ -13,6 +13,7 @@ mk {
     inherit (localCrates)
       sel4
       sel4-root-task
+      sel4-supervising
     ;
   };
 }

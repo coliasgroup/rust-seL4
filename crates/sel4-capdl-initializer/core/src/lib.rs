@@ -21,6 +21,7 @@ use sel4::{
     CapRights, CapTypeForFrameObjectOfFixedSize,
 };
 use sel4_capdl_initializer_types::*;
+use sel4_supervising::UserContextExt;
 
 mod buffers;
 mod cslot_allocator;
@@ -728,8 +729,8 @@ impl<'a, N: ObjectName, D: Content, M: GetEmbeddedFrame, B: BorrowMut<[PerObject
 
             {
                 let mut regs = sel4::UserContext::default();
-                *regs.pc_mut() = obj.extra.ip;
-                *regs.sp_mut() = obj.extra.sp;
+                *regs.generic_pc_mut() = obj.extra.ip;
+                *regs.generic_sp_mut() = obj.extra.sp;
                 for (i, value) in obj.extra.gprs.iter().enumerate() {
                     *regs.c_param_mut(i) = *value;
                 }

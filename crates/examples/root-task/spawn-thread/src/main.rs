@@ -25,6 +25,7 @@ use sel4_root_task::{
     abort, panicking::catch_unwind, root_task, set_global_allocator_mutex_notification, Never,
 };
 use sel4_stack::Stack;
+use sel4_supervising::UserContextExt;
 
 static SECONDARY_THREAD_STACK: Stack<4096> = Stack::new();
 
@@ -134,10 +135,10 @@ fn find_largest_kernel_untyped(bootinfo: &sel4::BootInfo) -> sel4::cap::Untyped 
 fn create_user_context(f: SecondaryThreadFn) -> sel4::UserContext {
     let mut ctx = sel4::UserContext::default();
 
-    *ctx.sp_mut() = (SECONDARY_THREAD_STACK.bottom().ptr() as usize)
+    *ctx.generic_sp_mut() = (SECONDARY_THREAD_STACK.bottom().ptr() as usize)
         .try_into()
         .unwrap();
-    *ctx.pc_mut() = (secondary_thread_entrypoint as usize).try_into().unwrap();
+    *ctx.generic_pc_mut() = (secondary_thread_entrypoint as usize).try_into().unwrap();
     *ctx.c_param_mut(0) = f.into_arg();
 
     let tls_reservation = TlsReservation::new(&get_tls_image());

@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: MIT
 //
 
-use crate::{newtype_methods, sys, Word};
+use crate::{newtype_methods, sys, user_context_newtype_ref_methods};
 
 /// Corresponds to `seL4_UserContext`.
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
@@ -13,77 +13,24 @@ pub struct UserContext(sys::seL4_UserContext);
 impl UserContext {
     newtype_methods!(pub sys::seL4_UserContext);
 
-    pub fn pc(&self) -> &Word {
-        &self.0.pc
-    }
+    user_context_newtype_ref_methods!(pc, pc_mut);
+    user_context_newtype_ref_methods!(sp, sp_mut);
+    user_context_newtype_ref_methods!(cpsr, cpsr_mut);
+    user_context_newtype_ref_methods!(tpidrurw, tpidrurw_mut);
+    user_context_newtype_ref_methods!(tpidruro, tpidruro_mut);
 
-    pub fn pc_mut(&mut self) -> &mut Word {
-        &mut self.0.pc
-    }
-
-    pub fn sp(&self) -> &Word {
-        &self.0.sp
-    }
-
-    pub fn sp_mut(&mut self) -> &mut Word {
-        &mut self.0.sp
-    }
-
-    pub fn cpsr(&self) -> &Word {
-        &self.0.cpsr
-    }
-
-    pub fn cpsr_mut(&mut self) -> &mut Word {
-        &mut self.0.cpsr
-    }
-
-    pub fn gpr(&self, ix: usize) -> &Word {
-        match ix {
-            0 => &self.inner().r0,
-            1 => &self.inner().r1,
-            2 => &self.inner().r2,
-            3 => &self.inner().r3,
-            4 => &self.inner().r4,
-            5 => &self.inner().r5,
-            6 => &self.inner().r6,
-            7 => &self.inner().r7,
-            8 => &self.inner().r8,
-            9 => &self.inner().r9,
-            10 => &self.inner().r10,
-            11 => &self.inner().r11,
-            12 => &self.inner().r12,
-            14 => &self.inner().r14,
-            _ => panic!(),
-        }
-    }
-
-    pub fn gpr_mut(&mut self, ix: usize) -> &mut Word {
-        match ix {
-            0 => &mut self.inner_mut().r0,
-            1 => &mut self.inner_mut().r1,
-            2 => &mut self.inner_mut().r2,
-            3 => &mut self.inner_mut().r3,
-            4 => &mut self.inner_mut().r4,
-            5 => &mut self.inner_mut().r5,
-            6 => &mut self.inner_mut().r6,
-            7 => &mut self.inner_mut().r7,
-            8 => &mut self.inner_mut().r8,
-            9 => &mut self.inner_mut().r9,
-            10 => &mut self.inner_mut().r10,
-            11 => &mut self.inner_mut().r11,
-            12 => &mut self.inner_mut().r12,
-            14 => &mut self.inner_mut().r14,
-            _ => panic!(),
-        }
-    }
-
-    pub fn c_param(&self, ix: usize) -> &Word {
-        assert!(ix < 4);
-        self.gpr(ix)
-    }
-
-    pub fn c_param_mut(&mut self, ix: usize) -> &mut Word {
-        assert!(ix < 4);
-        self.gpr_mut(ix)
-    }
+    user_context_newtype_ref_methods!(r0, r0_mut);
+    user_context_newtype_ref_methods!(r1, r1_mut);
+    user_context_newtype_ref_methods!(r2, r2_mut);
+    user_context_newtype_ref_methods!(r3, r3_mut);
+    user_context_newtype_ref_methods!(r4, r4_mut);
+    user_context_newtype_ref_methods!(r5, r5_mut);
+    user_context_newtype_ref_methods!(r6, r6_mut);
+    user_context_newtype_ref_methods!(r7, r7_mut);
+    user_context_newtype_ref_methods!(r8, r8_mut);
+    user_context_newtype_ref_methods!(r9, r9_mut);
+    user_context_newtype_ref_methods!(r10, r10_mut);
+    user_context_newtype_ref_methods!(r11, r11_mut);
+    user_context_newtype_ref_methods!(r12, r12_mut);
+    user_context_newtype_ref_methods!(r14, r14_mut);
 }

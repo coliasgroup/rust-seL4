@@ -16,6 +16,7 @@ mk {
       sel4-elf-header
       sel4-stack
       sel4-initialize-tls
+      sel4-supervising
     ;
   };
 }

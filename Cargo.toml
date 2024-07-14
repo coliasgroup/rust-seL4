@@ -136,6 +136,7 @@ members = [
     "crates/sel4-shared-ring-buffer/bookkeeping",
     "crates/sel4-shared-ring-buffer/smoltcp",
     "crates/sel4-stack",
+    "crates/sel4-supervising",
     "crates/sel4-sync",
     "crates/sel4-sync/trivial",
     "crates/sel4-synthetic-elf",

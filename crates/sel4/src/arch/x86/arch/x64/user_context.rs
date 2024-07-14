@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: MIT
 //
 
-use crate::{newtype_methods, sys, Word};
+use crate::{newtype_methods, sys, user_context_newtype_ref_methods};
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct UserContext(sys::seL4_UserContext);
@@ -12,43 +12,24 @@ pub struct UserContext(sys::seL4_UserContext);
 impl UserContext {
     newtype_methods!(pub sys::seL4_UserContext);
 
-    pub fn pc(&self) -> &Word {
-        &self.0.rip
-    }
-
-    pub fn pc_mut(&mut self) -> &mut Word {
-        &mut self.0.rip
-    }
-
-    pub fn sp(&self) -> &Word {
-        &self.0.rsp
-    }
-
-    pub fn sp_mut(&mut self) -> &mut Word {
-        &mut self.0.rsp
-    }
-
-    pub fn c_param(&self, ix: usize) -> &Word {
-        match ix {
-            0 => &self.inner().rdi,
-            1 => &self.inner().rsi,
-            2 => &self.inner().rdx,
-            3 => &self.inner().rcx,
-            4 => &self.inner().r8,
-            5 => &self.inner().r9,
-            _ => panic!(),
-        }
-    }
-
-    pub fn c_param_mut(&mut self, ix: usize) -> &mut Word {
-        match ix {
-            0 => &mut self.inner_mut().rdi,
-            1 => &mut self.inner_mut().rsi,
-            2 => &mut self.inner_mut().rdx,
-            3 => &mut self.inner_mut().rcx,
-            4 => &mut self.inner_mut().r8,
-            5 => &mut self.inner_mut().r9,
-            _ => panic!(),
-        }
-    }
+    user_context_newtype_ref_methods!(rip, rip_mut);
+    user_context_newtype_ref_methods!(rsp, rsp_mut);
+    user_context_newtype_ref_methods!(rflags, rflags_mut);
+    user_context_newtype_ref_methods!(fs_base, fs_base_mut);
+    user_context_newtype_ref_methods!(gs_base, gs_base_mut);
+    user_context_newtype_ref_methods!(rax, rax_mut);
+    user_context_newtype_ref_methods!(rbx, rbx_mut);
+    user_context_newtype_ref_methods!(rcx, rcx_mut);
+    user_context_newtype_ref_methods!(rdx, rdx_mut);
+    user_context_newtype_ref_methods!(rsi, rsi_mut);
+    user_context_newtype_ref_methods!(rdi, rdi_mut);
+    user_context_newtype_ref_methods!(rbp, rbp_mut);
+    user_context_newtype_ref_methods!(r8, r8_mut);
+    user_context_newtype_ref_methods!(r9, r9_mut);
+    user_context_newtype_ref_methods!(r10, r10_mut);
+    user_context_newtype_ref_methods!(r11, r11_mut);
+    user_context_newtype_ref_methods!(r12, r12_mut);
+    user_context_newtype_ref_methods!(r13, r13_mut);
+    user_context_newtype_ref_methods!(r14, r14_mut);
+    user_context_newtype_ref_methods!(r15, r15_mut);
 }

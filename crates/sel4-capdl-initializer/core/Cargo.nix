@@ -12,6 +12,7 @@ mk {
     inherit (versions) log;
     inherit (localCrates)
       sel4
+      sel4-supervising
     ;
     sel4-capdl-initializer-types = localCrates.sel4-capdl-initializer-types // { features = [ "sel4" ]; };
   };

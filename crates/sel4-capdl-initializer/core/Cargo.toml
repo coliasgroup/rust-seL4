@@ -20,3 +20,4 @@ license = "BSD-2-Clause"
 log = "0.4.17"
 sel4 = { path = "../../sel4" }
 sel4-capdl-initializer-types = { path = "../types", features = ["sel4"] }
+sel4-supervising = { path = "../../sel4-supervising" }

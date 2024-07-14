@@ -157,7 +157,8 @@ pub use arch::top_level::*;
 pub(crate) use helper_macros::{
     declare_cap_alias, declare_cap_type, declare_cap_type_for_object,
     declare_cap_type_for_object_of_fixed_size, declare_cap_type_for_object_of_variable_size,
-    declare_fault_newtype, newtype_methods,
+    declare_fault_ipc_buffer_newtype, declare_fault_newtype, fault_ipc_buffer_newtype_ref_methods,
+    fault_newtype_getter_method, newtype_methods, user_context_newtype_ref_methods,
 };
 
 sel4_cfg_if! {

@@ -2108,6 +2108,7 @@ dependencies = [
  "log",
  "sel4",
  "sel4-capdl-initializer-types",
+ "sel4-supervising",
 ]
 
 [[package]]
@@ -2736,6 +2737,14 @@ name = "sel4-stack"
 version = "0.1.0"
 
 [[package]]
+name = "sel4-supervising"
+version = "0.1.0"
+dependencies = [
+ "sel4",
+ "zerocopy",
+]
+
+[[package]]
 name = "sel4-sync"
 version = "0.1.0"
 dependencies = [
@@ -2939,6 +2948,7 @@ dependencies = [
  "object",
  "sel4",
  "sel4-root-task",
+ "sel4-supervising",
 ]
 
 [[package]]
@@ -2964,6 +2974,7 @@ dependencies = [
  "sel4-initialize-tls",
  "sel4-root-task",
  "sel4-stack",
+ "sel4-supervising",
 ]
 
 [[package]]

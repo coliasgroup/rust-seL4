@@ -15,6 +15,7 @@ use core::ptr;
 use object::{File, Object};
 
 use sel4_root_task::{root_task, Never};
+use sel4_supervising::UserContextExt;
 
 mod child_vspace;
 mod object_allocator;
@@ -82,7 +83,7 @@ fn main(bootinfo: &sel4::BootInfoPtr) -> sel4::Result<Never> {
         .unwrap();
 
     let mut ctx = sel4::UserContext::default();
-    *ctx.pc_mut() = child_image.entry().try_into().unwrap();
+    *ctx.generic_pc_mut() = child_image.entry().try_into().unwrap();
     child_tcb.tcb_write_all_registers(true, &mut ctx).unwrap();
 
     inter_task_nfn.wait();

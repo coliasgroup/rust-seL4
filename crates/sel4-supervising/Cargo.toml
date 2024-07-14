@@ -10,14 +10,12 @@
 #
 
 [package]
-name = "spawn-task"
+name = "sel4-supervising"
 version = "0.1.0"
 authors = ["Nick Spinale <nick.spinale@coliasgroup.com>"]
 edition = "2021"
 license = "BSD-2-Clause"
 
 [dependencies]
-object = { version = "0.36.1", default-features = false, features = ["read"] }
-sel4 = { path = "../../../sel4" }
-sel4-root-task = { path = "../../../sel4-root-task" }
-sel4-supervising = { path = "../../../sel4-supervising" }
+sel4 = { path = "../sel4" }
+zerocopy = "0.7.32"
